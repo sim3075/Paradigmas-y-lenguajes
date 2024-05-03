@@ -1,24 +1,34 @@
-import { IRoom } from "./IRoom"
+import { IRoom } from "./IRoom";
 
 export interface IHotel {
-    name?: string,
-    location?: {
-        country?: string,
-        state?: string,
-        city?: string,
-        neighborhood?: string,
-        address?: string
-    },
-    contact?: {
-        prefix?: number,
-        phone?: number,
-        web?: string,
-    },
-    stars?: number,
-    rating?: {
-        total?: number,
-        votes?: number,
-    },
-    features?: string[],
-    rooms?: IRoom[]
+    id: number;
+    type: string;
+    name: string;
+    location: Location;
+    contact: Contact;
+    stars: number;
+    rating: Rating;
+    features: string[];
+    rooms: IRoom[];
 }
+
+export interface Contact {
+    prefix: string;
+    phone: string;
+    web: string;
+}
+
+export interface Location {
+    country: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    address: string;
+}
+
+export interface Rating {
+    total: number;
+    votes: number;
+}
+
+

@@ -1,26 +1,23 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { RoomService } from "../../services/room";
+import { LoggerService } from "./loggerService";
 import { connectDb } from "@/app/libs/db/mongodb";
-import { LoggerService } from "@/app/api/logger/loggerService";
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
     try {
         const initTime = Date.now()
-
         await connectDb()
-        const room = await request.json()
 
-        const newRoom = await RoomService.create(params.id, room)
-        //logger
+        const logs = await LoggerService.getLogs({})
+
         const endTime = Date.now()
+
         await LoggerService.log({
             httpMethod: request.method,
             path: request.nextUrl.pathname,
             responseTime: endTime - initTime,
             clientIp: request.headers.get('X-Forwarded-For') || "0"
         })
-
-        return NextResponse.json({ ok: true, response: newRoom })
+        return NextResponse.json({ ok: true, response: logs })
 
     } catch (error: any) {
         console.error(error);
@@ -28,14 +25,19 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 }
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest) {
     try {
         const initTime = Date.now()
 
+        const deleteDate = new Date(request.nextUrl.searchParams.get("d"))
         await connectDb()
-        const rooms = await RoomService.getAll(params.id)
-        //logger
+        if (!deleteDate.getDate() || isNaN(deleteDate.getDate())) {
+            throw new Error("Invalid date")
+        }
+        
+        const deleted = await LoggerService.deleteLogs(deleteDate)
         const endTime = Date.now()
+
         await LoggerService.log({
             httpMethod: request.method,
             path: request.nextUrl.pathname,
@@ -43,8 +45,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             clientIp: request.headers.get('X-Forwarded-For') || "0"
         })
 
-        return NextResponse.json({ ok: true, response: rooms })
-
+        return NextResponse.json({ ok: true, response: deleted })
     } catch (error: any) {
         console.error(error);
         return NextResponse.json({ ok: false, error: `${error.name}: ${error.message}` })

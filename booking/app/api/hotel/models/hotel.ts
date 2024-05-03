@@ -11,14 +11,14 @@ const hotelSchema = new Schema({
         address: { type: String, required: true },
     },
     contact: {
-        prefix: { type: Number, required: true },
-        phone: { type: Number, required: true },
+        prefix: { type: Number, required: true, min: 0 },
+        phone: { type: Number, required: true, min: 0 },
         web: String
     },
     stars: { type: Number, required: true, max: 5, min: 0 },
     rating: {
-        total: { type: Number, default: 0 },
-        votes: { type: Number, default: 0 }
+        total: { type: Number, default: 0, min: 0 },
+        votes: { type: Number, default: 0, min: 0 }
     },
     features: { type: [String], required: true },
     rooms: [roomSchema]
