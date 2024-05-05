@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "amadeus": "^10.0.0",
     "dotenv": "^16.4.5",
     "mongoose": "^8.3.2",
     "next": "14.1.3",
