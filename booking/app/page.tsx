@@ -1,6 +1,10 @@
 import Image from "next/image";
+import { new_flight } from "./api/flight/services/amadeus";
 
 export default function Home() {
+
+  var a = new_flight("SYD","BKK","2024-07-01","2")
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
