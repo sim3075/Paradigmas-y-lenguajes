@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Cabin } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Header from "./components/Header";
 
 const cabin = Cabin({ subsets: ["latin"] });
 

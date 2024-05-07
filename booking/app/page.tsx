@@ -4,7 +4,7 @@ import Header from "./components/Header";
 export default function Home() {
   return (
     <div className="relative">
-      <Header />
+      <Header isHome={true} />
       <div className="absolute inset-0 z-[-1]">
         <Hero />
       </div>
