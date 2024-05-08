@@ -76,7 +76,15 @@ function SearchForm() {
     const checkin = `${checkin_year}-${checkin_month}-${checkin_monthday}`;
     const checkout = `${checkout_year}-${checkout_month}-${checkout_monthday}`;
 
-    console.log(checkin);
+    const url = new URL("https://www.booking.com/searchresults.html");
+    url.searchParams.set("ss", values.location);
+    url.searchParams.set("group_adults", values.adults);
+    url.searchParams.set("group_children", values.children);
+    url.searchParams.set("no_rooms", values.rooms);
+    url.searchParams.set("checkin", checkin);
+    url.searchParams.set("checkout", checkout);
+
+    router.push(`/search?url=${url.href}`);
   }
   return (
     <Form {...form}>
