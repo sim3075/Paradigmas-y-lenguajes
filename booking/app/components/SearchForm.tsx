@@ -24,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
 
 export const formSchema = z.object({
   location: z
@@ -92,7 +93,10 @@ function SearchForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col lg:flex-row lg:max-w-6xl lg:mx-auto items-center justify-center space-x-0 lg:space-x-2 space-y-4 lg:space-y-0 rounded-lg"
       >
-        <div className="grid w-full lg:max-w-sm items-center gap-1.5">
+        <motion.div
+          className="grid w-full lg:max-w-sm items-center gap-1.5 pr-3"
+          whileHover={{ scale: 1.03 }}
+        >
           <FormField
             control={form.control}
             name="location"
@@ -110,9 +114,12 @@ function SearchForm() {
               </FormItem>
             )}
           />
-        </div>
+        </motion.div>
         {/* El siguiente elemento del componente no fue hecho por mi*/}
-        <div className="grid w-full lg:max-w-sm items-center gap-1.5">
+        <motion.div
+          className="grid w-full lg:max-w-sm items-center gap-1.5"
+          whileHover={{ scale: 1.03 }}
+        >
           <FormField
             control={form.control}
             name="dates"
@@ -168,22 +175,27 @@ function SearchForm() {
               </FormItem>
             )}
           />
-        </div>
+        </motion.div>
         <div className="flex w-full items-center space-x-2">
-          <FormField
-            control={form.control}
-            name="adults"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-white">Adultos</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input type="number" placeholder="Adultos" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <div className="grid items-center flex-3">
+          <motion.div whileHover={{ scale: 1.03 }}>
+            <FormField
+              control={form.control}
+              name="adults"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="text-white">Adultos</FormLabel>
+                  <FormMessage />
+                  <FormControl>
+                    <Input type="number" placeholder="Adultos" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </motion.div>
+          <motion.div
+            className="grid items-center flex-3"
+            whileHover={{ scale: 1.03 }}
+          >
             <FormField
               control={form.control}
               name="children"
@@ -197,9 +209,12 @@ function SearchForm() {
                 </FormItem>
               )}
             />
-          </div>
+          </motion.div>
 
-          <div className="grid items-center flex-1">
+          <motion.div
+            className="grid items-center flex-1"
+            whileHover={{ scale: 1.03 }}
+          >
             <FormField
               control={form.control}
               name="rooms"
@@ -213,12 +228,12 @@ function SearchForm() {
                 </FormItem>
               )}
             />
-          </div>
-          <div className="mt-auto">
+          </motion.div>
+          <motion.div className="mt-auto" whileHover={{ scale: 1.05 }}>
             <Button type="submit" className="bg-blue-500 text-base">
               Buscar
             </Button>
-          </div>
+          </motion.div>
         </div>
       </form>
     </Form>

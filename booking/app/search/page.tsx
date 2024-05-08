@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { notFound } from "next/navigation";
 import Header from "../components/Header";
 import { scrapper } from "@/lib/scrapper";

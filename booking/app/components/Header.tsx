@@ -86,7 +86,7 @@ function Header({ isHome }: { isHome: boolean }) {
               variants={menuItemVariants}
             >
               <Link href={item.path}>
-                <h2 className="font-md text-[19px]">{item.name}</h2>
+                <h2 className="font-bold text-[19px]">{item.name}</h2>
               </Link>
             </motion.div>
           ))}
