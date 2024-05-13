@@ -1,4 +1,4 @@
-import { SearchParams } from "@/app/search/page";
+import { SearchParams } from "@/app/travel-search/page";
 import { Result } from "@/typings";
 
 export async function scrapper(searchParams: SearchParams) {

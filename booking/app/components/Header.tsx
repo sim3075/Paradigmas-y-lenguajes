@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import SearchBox from "./SearchBox";
 import { UserButton, useUser } from "@clerk/nextjs";
 
 function Header({ isHome }: { isHome: boolean }) {
