@@ -85,7 +85,7 @@ function SearchForm() {
     url.searchParams.set("checkin", checkin);
     url.searchParams.set("checkout", checkout);
 
-    router.push(`/search?url=${url.href}`);
+    router.push(`/travel-search?url=${url.href}`);
   }
   return (
     <Form {...form}>

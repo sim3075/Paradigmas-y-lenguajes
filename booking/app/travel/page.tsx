@@ -3,9 +3,7 @@
 import React from "react";
 import Header from "../components/Header";
 import { trending_data } from "@/data/trending";
-import Image from "next/image";
 import SearchForm from "../components/SearchForm";
-import Transition from "../components/Transition";
 import { motion } from "framer-motion";
 
 function Travel() {
