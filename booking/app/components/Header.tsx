@@ -28,18 +28,13 @@ function Header({ isHome }: { isHome: boolean }) {
     },
     {
       id: 3,
-      name: "Train",
-      path: "/train",
-    },
-    {
-      id: 4,
-      name: "Hotel",
-      path: "/hotel",
-    },
-    {
-      id: 5,
       name: "Car Rental",
       path: "/car",
+    },
+    {
+      id: 3,
+      name: "Support",
+      path: "/support",
     },
   ];
 

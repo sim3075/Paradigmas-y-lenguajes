@@ -3,7 +3,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Image from "next/image";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/TravelForm";
 import Transition from "../components/Transition";
 import { motion } from "framer-motion";
 import { rentingcars_data } from "@/data/rentingcars";
@@ -25,7 +25,7 @@ function rentalcar() {
         </section>
 
         <section className="m-4 mt-0  px-2 lg:px-4">
-          <RentalForm/>
+          <RentalForm />
         </section>
 
         <section className="max-w-7xl mx-auto mt-10 p-6 bg-white rounded-lg">
@@ -50,7 +50,7 @@ function rentalcar() {
                 key={item.id}
                 className="space-y-1 shrink-0 cursor-pointer ml-3"
                 whileHover={{ scale: 1.03 }}
-              > 
+              >
                 <img
                   key={item.id}
                   className="w-70 h-52 object-cover rounded-lg pb-2"

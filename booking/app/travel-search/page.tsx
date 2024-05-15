@@ -23,8 +23,6 @@ async function SearchPage({ searchParams }: Props) {
 
   if (!results) return <div>No results...</div>;
 
-  console.log(results.content.listings);
-
   return (
     <section>
       <Header isHome={false} />

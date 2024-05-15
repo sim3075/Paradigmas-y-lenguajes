@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useState } from "react";
@@ -13,14 +14,16 @@ interface FlightSelection {
 }
 
 function Flight() {
-  const [selectedCity, setSelectedCity] = useState("Bogotá"); 
-  const [selectedFlight, setSelectedFlight] = useState<FlightSelection | null>(null);
+  const [selectedCity, setSelectedCity] = useState("Bogotá");
+  const [selectedFlight, setSelectedFlight] = useState<FlightSelection | null>(
+    null
+  );
 
   const filteredFlights = trendingFlight_data.filter(
     (flight) => flight.location.split(",")[0] === selectedCity
   );
 
-  const handleFlightSelection = (location: string, destination: string) =>  {
+  const handleFlightSelection = (location: string, destination: string) => {
     setSelectedFlight({ location, destination });
   };
 
@@ -37,7 +40,7 @@ function Flight() {
         </section>
 
         <section className="m-4 mt-0 px-2 lg:px-4">
-        <SearchFormFlight selectedFlight={selectedFlight}/>    
+          <SearchFormFlight selectedFlight={selectedFlight} />
         </section>
 
         <section className="max-w-7xl mx-auto mt-10 p-6 bg-white rounded-lg">
@@ -49,7 +52,6 @@ function Flight() {
               Descubre los vuelos más populares de la semana
             </p>
             <p className="font-light">
-     
               <select
                 className="bg-white border border-gray-300 rounded px-4 py-2 mt-2 mb-4"
                 value={selectedCity}
@@ -57,7 +59,6 @@ function Flight() {
               >
                 <option value="Bogotá">Bogotá</option>
                 <option value="Medellín">Medellín</option>
-          
               </select>
             </p>
           </div>
@@ -89,7 +90,6 @@ function Flight() {
                 <p className="font-bold">{item.destination}</p>
                 <p className="font-bold">{item.price}</p>
                 <p className="text-sm">{item.description}</p>
-                
               </motion.div>
             ))}
           </motion.div>

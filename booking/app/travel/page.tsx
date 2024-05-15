@@ -3,7 +3,7 @@
 import React from "react";
 import Header from "../components/Header";
 import { trending_data } from "@/data/trending";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/TravelForm";
 import { motion } from "framer-motion";
 
 function Travel() {
