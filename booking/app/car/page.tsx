@@ -2,9 +2,6 @@
 "use client";
 import React from "react";
 import Header from "../components/Header";
-import Image from "next/image";
-import SearchForm from "../components/TravelForm";
-import Transition from "../components/Transition";
 import { motion } from "framer-motion";
 import { rentingcars_data } from "@/data/rentingcars";
 import RentalForm from "../components/RentalForm";

@@ -5,8 +5,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import { trendingFlight_data } from "@/data/trendingFlight_data";
 import { motion } from "framer-motion";
-import SearchFormFlight from "../components/SearchFormFlight";
-import { useForm } from "react-hook-form";
+import SearchFormFlight from "../components/FlightForm";
 
 interface FlightSelection {
   location: string;

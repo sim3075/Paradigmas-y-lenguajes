@@ -5,8 +5,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {CalendarIcon, PlaneTakeoff } from "lucide-react";
-import { PlaneLanding } from "lucide-react";
+import { CalendarIcon, PlaneTakeoff } from "lucide-react";
 import { format } from "date-fns/format";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -35,20 +34,14 @@ export const formSchema = z.object({
     .min(2, "Ubicación invalida")
     .max(50, "Ubicación invalida"),
 
-    destination: z
+  destination: z
     .string()
     .min(2, "Destino inválido")
     .max(50, "Destino inválido"),
 
-    locationIATA: z
-    .string()
-    .min(1, "IATA invalida")
-    .max(4,"IATA invalida"),
+  locationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
 
-    destinationIATA: z
-    .string()
-    .min(1, "IATA invalida")
-    .max(4,"IATA invalida"),
+  destinationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
 
   dates: z.object({
     from: z.date(),
@@ -73,14 +66,16 @@ interface FlightSelection {
   destination: string;
 }
 
-
-function SearchFormFlight({ selectedFlight }: { selectedFlight: FlightSelection | null }) {
-
+function SearchFormFlight({
+  selectedFlight,
+}: {
+  selectedFlight: FlightSelection | null;
+}) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      location: selectedFlight ? selectedFlight.location : "", 
+      location: selectedFlight ? selectedFlight.location : "",
       destination: selectedFlight ? selectedFlight.destination : "",
       locationIATA: "",
       destinationIATA: "",
@@ -99,12 +94,14 @@ function SearchFormFlight({ selectedFlight }: { selectedFlight: FlightSelection 
     locationIATA: string;
   }
 
-
-const handleAirportSelected = (info: AirportInfo, field: "location" | "destination" , fieldIATA: "locationIATA" | "destinationIATA" ) => {
-  form.setValue(field, info.location);
-  form.setValue(fieldIATA, info.locationIATA);
-};
-  
+  const handleAirportSelected = (
+    info: AirportInfo,
+    field: "location" | "destination",
+    fieldIATA: "locationIATA" | "destinationIATA"
+  ) => {
+    form.setValue(field, info.location);
+    form.setValue(fieldIATA, info.locationIATA);
+  };
 
   useEffect(() => {
     if (selectedFlight) {
@@ -116,10 +113,9 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
         button.click();
       }
     }
-  }, [selectedFlight]);
+  }, [form, selectedFlight]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-
     const checkin_monthday = values.dates.from.getDate().toString();
     const checkin_month = (values.dates.from.getMonth() + 1).toString();
     const checkin_year = values.dates.from.getFullYear().toString();
@@ -127,15 +123,13 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
     const checkout_month = (values.dates.to.getMonth() + 1).toString();
     const checkout_year = values.dates.to.getFullYear().toString();
 
-
     const checkin = `${checkin_year}-${checkin_month}-${checkin_monthday}`;
     const checkout = `${checkout_year}-${checkout_month}-${checkout_monthday}`;
 
-    console.log("Location:", values.location)
-    console.log("Destination: ", values.destination)
-    console.log("LocationIATA:", values.locationIATA)
-    console.log("DestinationIATA:", values.destinationIATA)
-
+    console.log("Location:", values.location);
+    console.log("Destination: ", values.destination);
+    console.log("LocationIATA:", values.locationIATA);
+    console.log("DestinationIATA:", values.destinationIATA);
 
     const url = new URL("https://www.booking.com/searchresults.html");
     url.searchParams.set("ss", values.location);
@@ -157,7 +151,7 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
           className="grid w-full lg:max-w-sm items-center gap-1.5 pr-3"
           whileHover={{ scale: 1.03 }}
         >
-         {/* <FormField
+          {/* <FormField
             control={form.control}
             name="location"
             render={({ field }) => (
@@ -174,14 +168,20 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
             )}
           />*/}
 
-          <AirportAutocomplete label="Origen" placeholder="Medellín, Colombia" onAirportSelected={(value) => handleAirportSelected(value, "location", "locationIATA")}/>
+          <AirportAutocomplete
+            label="Origen"
+            placeholder="Medellín, Colombia"
+            onAirportSelected={(value) =>
+              handleAirportSelected(value, "location", "locationIATA")
+            }
+          />
         </motion.div>
- 
+
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5"
           whileHover={{ scale: 1.03 }}
         >
-           {/*} <FormField
+          {/*} <FormField
             control={form.control}
             name="destination"
             render={({ field }) => (
@@ -199,14 +199,19 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
             )}
           />*/}
 
-          <AirportAutocomplete label="Destino" placeholder="Cancún, México" onAirportSelected={(value) => handleAirportSelected(value, "destination", "destinationIATA")}/>
-          </motion.div>
-  
+          <AirportAutocomplete
+            label="Destino"
+            placeholder="Cancún, México"
+            onAirportSelected={(value) =>
+              handleAirportSelected(value, "destination", "destinationIATA")
+            }
+          />
+        </motion.div>
+
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5"
           whileHover={{ scale: 1.03 }}
-        >
-        </motion.div>
+        ></motion.div>
 
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5"
@@ -278,7 +283,12 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
                   <FormLabel className="text-white">Adultos</FormLabel>
                   <FormMessage />
                   <FormControl>
-                    <Input type="number" placeholder="Adultos" {...field} className="w-20" />
+                    <Input
+                      type="number"
+                      placeholder="Adultos"
+                      {...field}
+                      className="w-20"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -296,7 +306,12 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
                   <FormLabel className="text-white">Niños</FormLabel>
                   <FormMessage />
                   <FormControl>
-                    <Input type="number" placeholder="Children" {...field} className="w-20"/>
+                    <Input
+                      type="number"
+                      placeholder="Children"
+                      {...field}
+                      className="w-20"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -306,8 +321,7 @@ const handleAirportSelected = (info: AirportInfo, field: "location" | "destinati
           <motion.div
             className="grid items-center flex-1"
             whileHover={{ scale: 1.03 }}
-          >
-          </motion.div>
+          ></motion.div>
           <motion.div className="mt-auto" whileHover={{ scale: 1.05 }}>
             <Button type="submit" className="bg-blue-500 text-base">
               Buscar
