@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { new_flight } from "./api/flight/services/amadeus";
+import { checkFlightExists } from "./api/flight/services/checkFlightExists";
 
 export default function Home() {
 
-  var a = new_flight("SYD","BKK","2024-07-01","2")
+  var a = new_flight("SYD","BKK","2024-07-01")
+  
+  
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

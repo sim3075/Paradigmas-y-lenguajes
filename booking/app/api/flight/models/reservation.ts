@@ -10,8 +10,12 @@ export const reservationSchema = new Schema({
             email: { type: String, required: true }
         }
     },
-    guests: { type: Number, required: true },
+    passengers: { type: Number, required: true },
     id_flight: { type: Date, required: true },
 }, { timestamps: true })
+
+
+
+
 
 export const ReservationModel = models.Reservation || model("Reservation", reservationSchema);
