@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import SearchBox from "./SearchBox";
 import { UserButton, useUser } from "@clerk/nextjs";
 
-function Header() {
+function Header({ isHome }: { isHome: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -19,8 +18,8 @@ function Header() {
   const headerMenu = [
     {
       id: 1,
-      name: "Hotel",
-      path: "/hotel",
+      name: "Travel",
+      path: "/travel",
     },
     {
       id: 2,
@@ -29,18 +28,13 @@ function Header() {
     },
     {
       id: 3,
-      name: "Train",
-      path: "/train",
-    },
-    {
-      id: 4,
-      name: "Travel",
-      path: "/travel",
-    },
-    {
-      id: 5,
       name: "Car Rental",
       path: "/car",
+    },
+    {
+      id: 3,
+      name: "Support",
+      path: "/support",
     },
   ];
 
@@ -55,7 +49,13 @@ function Header() {
   };
 
   return (
-    <div className="p-2 pb-0.5 pl-3 header">
+    <div
+      className={
+        isHome
+          ? "p-2 pb-0.5 pl-3 text-white"
+          : "p-2 pb-0.5 pl-3 bg-[#054868] text-white"
+      }
+    >
       <div className="flex items-center">
         <motion.div className="flex items-center gap-1">
           <Image src="/logo.png" alt="logo-booktrip" width={70} height={70} />
@@ -80,14 +80,14 @@ function Header() {
               variants={menuItemVariants}
             >
               <Link href={item.path}>
-                <h2 className="font-md text-[19px]">{item.name}</h2>
+                <h2 className="font-bold text-[19px]">{item.name}</h2>
               </Link>
             </motion.div>
           ))}
         </div>
         <div className="flex-grow">
           <div className="hidden md:flex justify-center mr-20 ">
-            <SearchBox /> {/* Barra de busqueda de lugares */}
+            {/*<SearchBox /> {/* Barra de busqueda de lugares */}
           </div>
         </div>
         {!isSignedIn ? ( // Si el usuario no está autenticado se mostrará el boton de registro y login

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Cabin } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Header from "./components/Header";
+import Transition from "./components/Transition";
 
 const cabin = Cabin({ subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cabin.className}>
           {/*<Header />*/}
-          {children}
+          <Transition>{children}</Transition>
         </body>
       </html>
     </ClerkProvider>
