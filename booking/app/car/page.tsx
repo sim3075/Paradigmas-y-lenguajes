@@ -11,7 +11,7 @@ function rentalcar() {
     <div>
       <Header isHome={false} />
 
-      <main className="bg-[#054868] h-screen">
+      <main className="bg-[#054868]">
         <section className="max-w-7xl mx-auto p-5">
           <h2 className="font-bold text-5xl text-white">
             Busca tu nuevo vehiculo
