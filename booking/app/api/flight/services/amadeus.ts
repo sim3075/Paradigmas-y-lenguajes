@@ -1,26 +1,30 @@
-//conectar api 
+//conectar api
 
-var Amadeus = require('amadeus');
+var Amadeus = require("amadeus");
 
 var amadeus = new Amadeus({
   clientId: process.env.AMADEUS_clientId,
-  clientSecret: process.env.AMADEUS_clientSecret
+  clientSecret: process.env.AMADEUS_clientSecret,
 });
 
-// nuevo vuelo a buscar 
-export function new_flight(origin:String, destination:String,departure: String,persons:String ) {
-    amadeus.shopping.flightOffersSearch.get({
-        originLocationCode: origin,
-        destinationLocationCode:destination,
-        departureDate: departure,
-        adults: persons
+// nuevo vuelo a buscar
+export function new_flight(
+  origin: String,
+  destination: String,
+  departure: String,
+  persons: String
+) {
+  amadeus.shopping.flightOffersSearch
+    .get({
+      originLocationCode: origin,
+      destinationLocationCode: destination,
+      departureDate: departure,
+      adults: persons,
     })
-    .then(function(response) {
-        console.log(response.data);
+    .then(function (response: any) {
+      console.log(response.data);
     })
-    .catch(function(error) {
-        console.error(error);
+    .catch(function (error: any) {
+      console.error(error);
     });
 }
-
-
