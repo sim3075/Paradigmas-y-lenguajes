@@ -1,6 +1,5 @@
 import Hero from "./components/Hero";
 import Header from "./components/Header";
-import { new_flight } from "./api/flight/services/amadeus";
 import Transition from "./components/Transition";
 
 //var a = new_flight("SYD","BKK","2024-07-01","2")
