@@ -32,12 +32,9 @@ export const formSchema = z.object({
   location: z
     .string()
     .min(2, "Ubicación invalida")
-    .max(50, "Ubicación invalida"),
+    .max(70, "Ubicación invalida"),
 
-  destination: z
-    .string()
-    .min(2, "Destino inválido")
-    .max(50, "Destino inválido"),
+  destination: z.string().min(2, "Destino inválido").max(0, "Destino inválido"),
 
   locationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
 
@@ -131,15 +128,7 @@ function SearchFormFlight({
     console.log("LocationIATA:", values.locationIATA);
     console.log("DestinationIATA:", values.destinationIATA);
 
-    const url = new URL("https://www.booking.com/searchresults.html");
-    url.searchParams.set("ss", values.location);
-    url.searchParams.set("group_adults", values.adults);
-    url.searchParams.set("group_children", values.children);
-    url.searchParams.set("no_rooms", values.rooms);
-    url.searchParams.set("checkin", checkin);
-    url.searchParams.set("checkout", checkout);
-
-    router.push(`/search?url=${url.href}`);
+    //router.push(`/search?url=${url.href}`);
   }
   return (
     <Form {...form}>
