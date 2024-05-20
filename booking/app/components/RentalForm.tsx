@@ -26,10 +26,13 @@ import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
 export const formSchema = z.object({
-  location: z.string(),
+  location: z
+    .string()
+    .min(2, "Ubicación invalida")
+    .max(70, "Ubicación invalida"),
   pickupDate: z.date(),
   returnDate: z.date(),
-  brand: z.string(),
+  brand: z.string().min(2, "Marca invalida").max(70, "Marca invalida"),
 });
 
 function RentalForm() {
@@ -50,7 +53,13 @@ function RentalForm() {
     const returnDate = format(values.returnDate, "yyyy-MM-dd");
     const brand = values.brand;
 
-    console.log(location, pickupDate, returnDate, brand);
+    try {
+      router.push(
+        `/car-search?location=${location}&pickupDate=${pickupDate}&returnDate=${returnDate}&brand=${brand}`
+      );
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   }
 
   return (
