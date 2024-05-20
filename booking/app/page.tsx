@@ -2,7 +2,6 @@ import Hero from "./components/Hero";
 import Header from "./components/Header";
 import Transition from "./components/Transition";
 
-//var a = new_flight("SYD","BKK","2024-07-01","2")
 export default function Home() {
   return (
     <Transition>
