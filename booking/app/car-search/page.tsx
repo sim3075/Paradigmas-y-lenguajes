@@ -27,7 +27,9 @@ async function SearchPage({ searchParams }: Props) {
     <section>
       <Header isHome={false} />
       <div className="mx-auto max-w-7xl p-6 lg:px-8">
-        <h1 className="text-4xl font-bold pb-3">Tus resultados de viajes</h1>
+        <h1 className="text-4xl font-bold pb-3">
+          Tus resultados de alquiler de carros
+        </h1>
 
         <h2 className="pb-3">
           Fecha de recogida del carro
