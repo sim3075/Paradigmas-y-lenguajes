@@ -17,9 +17,14 @@ export type carParams = {
 async function SearchPage({ searchParams }: Props) {
   if (!searchParams.location) return notFound();
 
+  console.log(
+    `localhost:3000/api/car/search?origin=${searchParams.location}&brand=${searchParams.brand}`
+  );
   const results = fetch(
-    `http://localhost:3000/api/cars?location=${searchParams.location}&pickupDate=${searchParams.pickupDate}&returnDate=${searchParams.returnDate}&brand=${searchParams.brand}`
-  ).then((res) => res.json());
+    `http://localhost:3000/api/car/search?origin=${searchParams.location}&brand=${searchParams.brand}`
+  ).then(async (res) => {
+    await res.json();
+  });
 
   if (!results) return <div>No results...</div>;
 
@@ -43,7 +48,7 @@ async function SearchPage({ searchParams }: Props) {
         </h3>
 
         {/*<div className="space-y-2 mt-5">
-          {results.content.listings.map((item, i) => (
+          {results..map((item, i) => (
             <div
               key={i}
               className="flex space-y-2 justify-between space-x-4 p-5 border rounded-lg"
