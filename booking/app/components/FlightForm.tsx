@@ -1,11 +1,11 @@
 "use client";
-
 import * as z from "zod";
-import React, { useEffect } from "react";
+import React from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, PlaneTakeoff } from "lucide-react";
+import { BedDoubleIcon, CalendarIcon } from "lucide-react";
 import { format } from "date-fns/format";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -32,14 +32,11 @@ export const formSchema = z.object({
   location: z
     .string()
     .min(2, "Ubicación invalida")
-    .max(70, "Ubicación invalida"),
-
-  destination: z.string().min(2, "Destino inválido").max(0, "Destino inválido"),
-
-  locationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
-
-  destinationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
-
+    .max(50, "Ubicación invalida"),
+  destination: z
+    .string()
+    .min(2, "Ubicación invalida")
+    .max(50, "Ubicación invalida"),
   dates: z.object({
     from: z.date(),
     to: z.date(),
@@ -53,9 +50,6 @@ export const formSchema = z.object({
   children: z.string().min(0).max(12, {
     message: "Maximo 12 niños por viaje",
   }),
-  rooms: z.string().min(1, {
-    message: "Por favor selecciona al menos 1 habitación",
-  }),
 });
 
 interface FlightSelection {
@@ -63,7 +57,7 @@ interface FlightSelection {
   destination: string;
 }
 
-function SearchFormFlight({
+function SearchForm({
   selectedFlight,
 }: {
   selectedFlight: FlightSelection | null;
@@ -72,17 +66,14 @@ function SearchFormFlight({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      location: selectedFlight ? selectedFlight.location : "",
-      destination: selectedFlight ? selectedFlight.destination : "",
-      locationIATA: "",
-      destinationIATA: "",
+      location: "",
+      destination: "",
       dates: {
         from: new Date(),
         to: new Date(),
       },
       adults: "1",
       children: "0",
-      rooms: "1",
     },
   });
 
@@ -90,14 +81,11 @@ function SearchFormFlight({
     location: string;
     locationIATA: string;
   }
-
   const handleAirportSelected = (
     info: AirportInfo,
-    field: "location" | "destination",
-    fieldIATA: "locationIATA" | "destinationIATA"
+    field: "location" | "destination"
   ) => {
     form.setValue(field, info.location);
-    form.setValue(fieldIATA, info.locationIATA);
   };
 
   useEffect(() => {
@@ -120,88 +108,50 @@ function SearchFormFlight({
     const checkout_month = (values.dates.to.getMonth() + 1).toString();
     const checkout_year = values.dates.to.getFullYear().toString();
 
+    const location = values.location;
+    const destination = values.destination;
     const checkin = `${checkin_year}-${checkin_month}-${checkin_monthday}`;
     const checkout = `${checkout_year}-${checkout_month}-${checkout_monthday}`;
+    const passengers = `${parseInt(values.adults) + parseInt(values.children)}`;
 
-    console.log("Location:", values.location);
-    console.log("Destination: ", values.destination);
-    console.log("LocationIATA:", values.locationIATA);
-    console.log("DestinationIATA:", values.destinationIATA);
-
-    //router.push(`/search?url=${url.href}`);
+    try {
+      router.push(
+        `/flight-search?origin=${location}&destination=${destination}&departureDate=${checkin}&passengers=${passengers}`
+      );
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col lg:flex-row lg:max-w-6xl lg:mx-auto items-center justify-center space-x-0 lg:space-x-2 space-y-4 lg:space-y-0 rounded-lg "
+        className="flex flex-col lg:flex-row lg:max-w-6xl lg:mx-auto items-center justify-center space-x-0 lg:space-x-2 space-y-4 lg:space-y-0 rounded-lg"
       >
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5 pr-3"
           whileHover={{ scale: 1.03 }}
         >
-          {/* <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-white flex">
-                  Origen 
-                  <PlaneTakeoff className="ml-2 h-4 w-4 text-white" />
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Medellín, Colombia" {...field} style={{ width: '300px' }} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />*/}
-
           <AirportAutocomplete
             label="Origen"
             placeholder="Medellín, Colombia"
             onAirportSelected={(value) =>
-              handleAirportSelected(value, "location", "locationIATA")
+              handleAirportSelected(value, "location")
             }
           />
         </motion.div>
-
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5"
           whileHover={{ scale: 1.03 }}
         >
-          {/*} <FormField
-            control={form.control}
-            name="destination"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-white flex">
-                  Destino
-                  <PlaneLanding  className="ml-2 h-4 w-4 text-white"/>
-                </FormLabel>
-
-                <FormControl>
-                  <Input placeholder="Cancún, México" {...field} style={{ width: '300px' }} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />*/}
-
           <AirportAutocomplete
             label="Destino"
             placeholder="Cancún, México"
             onAirportSelected={(value) =>
-              handleAirportSelected(value, "destination", "destinationIATA")
+              handleAirportSelected(value, "destination")
             }
           />
         </motion.div>
-
-        <motion.div
-          className="grid w-full lg:max-w-sm items-center gap-1.5"
-          whileHover={{ scale: 1.03 }}
-        ></motion.div>
-
         <motion.div
           className="grid w-full lg:max-w-sm items-center gap-1.5"
           whileHover={{ scale: 1.03 }}
@@ -272,12 +222,7 @@ function SearchFormFlight({
                   <FormLabel className="text-white">Adultos</FormLabel>
                   <FormMessage />
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Adultos"
-                      {...field}
-                      className="w-20"
-                    />
+                    <Input type="number" placeholder="Adultos" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -295,12 +240,7 @@ function SearchFormFlight({
                   <FormLabel className="text-white">Niños</FormLabel>
                   <FormMessage />
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Children"
-                      {...field}
-                      className="w-20"
-                    />
+                    <Input type="number" placeholder="Children" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -321,4 +261,4 @@ function SearchFormFlight({
     </Form>
   );
 }
-export default SearchFormFlight;
+export default SearchForm;
