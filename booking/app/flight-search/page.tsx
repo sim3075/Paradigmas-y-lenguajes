@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { notFound } from "next/navigation";
 import Header from "../components/Header";
-import { scrapper } from "@/lib/scrapper";
-import Link from "next/link";
 type Props = {
   searchParams: flightParams;
 };
@@ -17,9 +15,9 @@ export type flightParams = {
 async function SearchPage({ searchParams }: Props) {
   if (!searchParams.origin) return notFound();
 
-  //console.log(
-  //  `localhost:3000/api/car/search?origin=${searchParams.location}&brand=${searchParams.brand}`
-  //);
+  console.log(
+    `http://localhost:3000/api/flight/search?origin=${searchParams.origin}&destination=${searchParams.destination}&departureDate=${searchParams.departureDate}&passengers=${searchParams.passengers}`
+  );
   const results = await fetch(
     `http://localhost:3000/api/flight/search?origin=${searchParams.origin}&destination=${searchParams.destination}&departureDate=${searchParams.departureDate}&passengers=${searchParams.passengers}`
   );
@@ -54,7 +52,7 @@ async function SearchPage({ searchParams }: Props) {
               className="flex space-y-2 justify-between space-x-4 p-5 border rounded-lg"
             >
               <img
-                src={item.photo}
+                src={item.image}
                 alt="image of property"
                 className="h-44 w-54 rounded-lg"
               />
@@ -62,7 +60,7 @@ async function SearchPage({ searchParams }: Props) {
               <div className="flex flex-1 space-x-5 justify-between">
                 <div>
                   <p className="text-xl text-bold">
-                    {item.brand} en {item.city}
+                    {item.origin} - {item.destination}
                   </p>
                   <p className="text-sm">{item.description}</p>
                 </div>
