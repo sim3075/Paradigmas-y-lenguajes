@@ -50,12 +50,13 @@ function AirportAutocomplete({ label, placeholder, onAirportSelected }: Items) {
 
   useEffect(() => {
     if (autoComplete) {
-      autoComplete.addListener("place_changed", () => {
+      autoComplete.addListener("place_changed", async () => {
         const place = autoComplete.getPlace();
-        if (place?.address_components) {
+        if (place?.address_components && place.geometry?.location) {
+          let lat = place.geometry.location.lat();
+          let lng = place.geometry.location.lng();
           let cityName = "";
           let countryName = "";
-          let iataCode = "";
           place.address_components.forEach((component) => {
             if (component.types.includes("locality")) {
               cityName = component.long_name;
@@ -63,12 +64,14 @@ function AirportAutocomplete({ label, placeholder, onAirportSelected }: Items) {
               countryName = component.long_name;
             }
           });
-          // Obtener el código IATA si está disponible
-          const iataRegex = /\(([A-Z]{3})\)$/;
-          const match = place.name?.match(iataRegex);
-          if (match) {
-            iataCode = match[1];
-          }
+
+          // Hacer una petición a la API para obtener el código IATA
+          const response = await fetch(
+            `http://iatageo.com/getCode/${lat}/${lng}`
+          );
+          const data = await response.json();
+          const iataCode = data.IATA || "";
+
           // Construir la cadena final
           const airportInfo = `${cityName} (${countryName}) ${iataCode}`;
           setAirportValue(airportInfo);
@@ -76,7 +79,7 @@ function AirportAutocomplete({ label, placeholder, onAirportSelected }: Items) {
         }
       });
     }
-  }, [autoComplete]);
+  }, [autoComplete, onAirportSelected]);
 
   return (
     <div>

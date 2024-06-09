@@ -1,59 +1,51 @@
-//conectar api
-
 var Amadeus = require("amadeus");
-
-var amadeus = new Amadeus({
+const amadeus = new Amadeus({
   clientId: process.env.AMADEUS_clientId,
   clientSecret: process.env.AMADEUS_clientSecret,
 });
 
 // nuevo vuelo a buscar
-export function new_flight(
-  origin: String,
-  destination: String,
-  departure: String
+export async function new_flight(
+  origin: string,
+  destination: string,
+  departure: string
 ) {
-  amadeus.shopping.flightOffersSearch
-    .get({
+  try {
+    const response = await amadeus.shopping.flightOffersSearch.get({
       originLocationCode: origin,
       destinationLocationCode: destination,
       departureDate: departure,
       adults: "1",
-    })
-    .then(function (response: any) {
-      var data = response.data[0];
-      var available_seats = parseInt(data.numberOfBookableSeats);
-      var price = parseFloat(data.price.total);
-      console.log(
-        new_flight_data(origin, destination, departure, available_seats, price)
-      );
-      return new_flight_data(
-        origin,
-        destination,
-        departure,
-        available_seats,
-        price
-      );
-    })
-    .catch(function (error: any) {
-      console.error(error);
     });
+    const data = response.data[0];
+    const available_seats = parseInt(data.numberOfBookableSeats);
+    const price = parseFloat(data.price.total);
+
+    return new_flight_data(
+      origin,
+      destination,
+      departure,
+      available_seats,
+      price
+    );
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 
 function new_flight_data(
-  origin_: String,
-  destination_: String,
-  departure_: String,
+  origin_: string,
+  destination_: string,
+  departure_: string,
   available_seats_: number,
   price_: number
 ) {
-  const data = {
+  return {
     origin: origin_,
     destination: destination_,
     departure_date: departure_,
     available_seats: available_seats_,
     price: price_,
   };
-
-  return JSON.stringify(data);
 }

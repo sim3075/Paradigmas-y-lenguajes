@@ -33,6 +33,8 @@ export const formSchema = z.object({
     .string()
     .min(2, "Ubicación invalida")
     .max(50, "Ubicación invalida"),
+  locationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
+  destinationIATA: z.string().min(1, "IATA invalida").max(4, "IATA invalida"),
   destination: z
     .string()
     .min(2, "Ubicación invalida")
@@ -68,6 +70,8 @@ function SearchForm({
     defaultValues: {
       location: "",
       destination: "",
+      locationIATA: "",
+      destinationIATA: "",
       dates: {
         from: new Date(),
         to: new Date(),
@@ -83,9 +87,11 @@ function SearchForm({
   }
   const handleAirportSelected = (
     info: AirportInfo,
-    field: "location" | "destination"
+    field: "location" | "destination",
+    fieldIATA: "locationIATA" | "destinationIATA"
   ) => {
     form.setValue(field, info.location);
+    form.setValue(fieldIATA, info.locationIATA);
   };
 
   useEffect(() => {
@@ -110,13 +116,15 @@ function SearchForm({
 
     const location = values.location.split(" ")[0];
     const destination = values.destination.split(" ")[0];
+    const locationIATA = values.locationIATA;
+    const destinationIATA = values.destinationIATA;
     const checkin = `${checkin_year}-${checkin_month}-${checkin_monthday}`;
     const checkout = `${checkout_year}-${checkout_month}-${checkout_monthday}`;
     const passengers = `${parseInt(values.adults) + parseInt(values.children)}`;
 
     try {
       router.push(
-        `/flight-search?origin=${location}&destination=${destination}&departureDate=${checkin}&passengers=${passengers}`
+        `/flight-search?origin=${location}&destination=${destination}&departureDate=${checkin}&passengers=${passengers}&locationIATA=${locationIATA}&destinationIATA=${destinationIATA}`
       );
     } catch (error) {
       console.error("Navigation error:", error);
@@ -136,7 +144,7 @@ function SearchForm({
             label="Origen"
             placeholder="Medellín, Colombia"
             onAirportSelected={(value) =>
-              handleAirportSelected(value, "location")
+              handleAirportSelected(value, "location", "locationIATA")
             }
           />
         </motion.div>
@@ -148,7 +156,7 @@ function SearchForm({
             label="Destino"
             placeholder="Cancún, México"
             onAirportSelected={(value) =>
-              handleAirportSelected(value, "destination")
+              handleAirportSelected(value, "destination", "destinationIATA")
             }
           />
         </motion.div>

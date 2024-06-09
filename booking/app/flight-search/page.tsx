@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { notFound } from "next/navigation";
 import Header from "../components/Header";
+import { new_flight } from "../api/flight/services/amadeus";
+
 type Props = {
   searchParams: flightParams;
 };
@@ -10,21 +12,33 @@ export type flightParams = {
   destination: string;
   departureDate: string;
   passengers: string;
+  locationIATA: string;
+  destinationIATA: string;
 };
 
 async function SearchPage({ searchParams }: Props) {
   if (!searchParams.origin) return notFound();
 
-  console.log(
-    `http://localhost:3000/api/flight/search?origin=${searchParams.origin}&destination=${searchParams.destination}&departureDate=${searchParams.departureDate}&passengers=${searchParams.passengers}`
-  );
   const results = await fetch(
     `http://localhost:3000/api/flight/search?origin=${searchParams.origin}&destination=${searchParams.destination}&departureDate=${searchParams.departureDate}&passengers=${searchParams.passengers}`
   );
 
-  const data = await results.json();
+  let data = await results.json();
 
-  if (!results) return <div>No results...</div>;
+  if (data.length === 0) {
+    console.log("No results found");
+    data = await new_flight(
+      searchParams.locationIATA,
+      searchParams.destinationIATA,
+      searchParams.departureDate
+    );
+    console.log(data);
+    if (data) {
+      data = [data]; // Convertir el objeto en un array para renderizar
+    }
+  }
+
+  if (!data || data.length === 0) return <div>No results...</div>;
 
   return (
     <section>
@@ -35,7 +49,7 @@ async function SearchPage({ searchParams }: Props) {
         </h1>
 
         <h2 className="pb-3">
-          Fecha de salida de los vueos
+          Fecha de salida de los vuelos
           <span className="italic ml-2">{searchParams.departureDate}</span>
         </h2>
 
@@ -60,7 +74,7 @@ async function SearchPage({ searchParams }: Props) {
               <div className="flex flex-1 space-x-5 justify-between">
                 <div>
                   <p className="text-xl text-bold">
-                    {item.origin} - {item.destination}
+                    {searchParams.origin} - {searchParams.destination}
                   </p>
                   <p className="text-sm">{item.description}</p>
                 </div>
@@ -78,8 +92,10 @@ async function SearchPage({ searchParams }: Props) {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-lg ">Asientos: {item.seats}</p>
-                    <p className="text-2xl font-bold">{item.price}</p>
+                    <p className="text-lg ">Asientos: {item.available_seats}</p>
+                    <p className="text-2xl font-bold">
+                      Precio: {item.price} {""}$
+                    </p>
                   </div>
                 </div>
               </div>
